@@ -8,16 +8,21 @@ export const s3Uploader = async (file, setLoading) => {
       fileName: file.name,
       fileType: file.type,
     });
+
     const { url, fileKey } = response.data;
-    const config = {
+
+    await axios.put(url, file, {
       headers: {
         "Content-Type": file.type,
       },
-    };
-    await axios.put(url, file, config);
+    });
+
     setLoading(false);
-    const fileUrl = `https://sidhupaints-storages.s3.ca-central-1.amazonaws.com/${fileKey}`;
+
+    // Derive base URL from presigned PUT URL
+    const fileUrl = url.split("?")[0]; // Remove query params, get clean URL
     return fileUrl;
+
   } catch (error) {
     setLoading(false);
     toast.error("Failed to upload image");
