@@ -19,10 +19,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getSliders } from "@/services/slidersService";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteSlider, getSliders } from "@/services/slidersService";
 import { ConfirmationModal } from "@/components/ConfirmationModal";
 import SliderDialog from "./SlidersDialog";
+import { toast } from "sonner";
 
 const containerAnimation = {
   hidden: { opacity: 0 },
@@ -47,6 +48,7 @@ const SlidersActionPage = () => {
   const [mode, setMode] = useState("add");
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [sliderDialogOpen, setSliderDialogOpen] = useState(false);
+  const [sliderIdToDelete, setSliderIdToDelete] = useState(null);
   const {
     data: sliders,
     isLoading,
@@ -61,7 +63,29 @@ const SlidersActionPage = () => {
     staleTime: 1000 * 60 * 5,
   });
 
-  const handleDelete = async () => {};
+  const deleteMutation = useMutation({
+    mutationFn: (id) => deleteSlider(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["sliders", page, limit]);
+      toast.success("Slider deleted successfully");
+    },
+    onError: (error) => {
+      console.error("Error deleting slider:", error);
+      toast.error(error?.response?.data?.message || "Error deleting slider");
+    },
+  })
+
+  const handleDelete = async () => {
+    toast.promise(
+      deleteMutation.mutateAsync(sliderIdToDelete),
+      {
+        loading: "Deleting slider...",
+        success: "Slider deleted successfully",
+        error: (error) => error?.response?.data?.message || "Error deleting slider"
+      },
+    );
+    setDeleteConfirmation(false);
+  };
 
   if (isLoading || isFetching) {
     return (
@@ -169,7 +193,10 @@ const SlidersActionPage = () => {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => setDeleteConfirmation(true)}
+                        onClick={() => {
+                          setDeleteConfirmation(true)
+                          setSliderIdToDelete(slider._id);
+                        }}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

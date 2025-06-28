@@ -16,7 +16,7 @@ export const s3Uploader = async (file, setLoading) => {
     };
     await axios.put(url, file, config);
     setLoading(false);
-    const fileUrl = `https://sidhupaints-storages.s3.ca-central-1.amazonaws.com/${fileKey}`;
+    const fileUrl = `https://makeeasy.s3.ap-south-1.amazonaws.com/${fileKey}`;
     return fileUrl;
   } catch (error) {
     setLoading(false);

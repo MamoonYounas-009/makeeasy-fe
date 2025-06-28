@@ -14,10 +14,10 @@ export default function CallToAction() {
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Button size="lg" asChild>
-            <Link href="/auth/register">Create an Account</Link>
+            <Link href="/auth/signup">Create an Account</Link>
           </Button>
           <Button size="lg" variant="outline" asChild>
-            <Link href="/contact">Create Seller Account</Link>
+            <Link href="/auth/signup">Create Seller Account</Link>
           </Button>
         </div>
       </div>
