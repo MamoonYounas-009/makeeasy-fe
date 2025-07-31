@@ -230,7 +230,7 @@ export function SellerDetail({ sellerId }) {
                         <span>{product?.feedbacks?.averageRating}</span>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4">
+                      {/* <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col">
                           <span className="text-xs text-muted-foreground">
                             In Stock
@@ -239,7 +239,7 @@ export function SellerDetail({ sellerId }) {
                             {product?.quantity} units
                           </span>
                         </div>
-                      </div>
+                      </div> */}
 
                       <Button className="w-full mt-4">
                         <ShoppingBag className="h-4 w-4 mr-2" />
