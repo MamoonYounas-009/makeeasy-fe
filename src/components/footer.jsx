@@ -51,6 +51,14 @@ export default function Footer() {
                   About Us
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="#"
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  makeeasy@gmail.com
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
